@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Upcoming WordCamps</title>
+    <title>WordCamps Upcoming Events</title>
     <link rel="stylesheet" href="https://unpkg.com/react-big-calendar@0.22.0/lib/css/react-big-calendar.css" />
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -18,10 +18,7 @@
         const localizer = ReactBigCalendar.momentLocalizer(moment);
         const Calendar = () => {
             const [events, setEvents] = React.useState([]);
-            const [url, setUrl] = React.useState(
-                "https://central.wordcamp.org/wp-json/wp/v2/wordcamps?per_page=100"
-            );
-
+            const [url, setUrl] = React.useState("https://central.wordcamp.org/wp-json/wp/v2/wordcamps?per_page=100");
             const handleSelectEvent = React.useCallback(
                 (event) => {
                     window.open(event.link, '_blank', 'noopener,noreferrer');
