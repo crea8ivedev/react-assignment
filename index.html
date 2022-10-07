@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Upcoming WordCamps</title>
+    <link rel="stylesheet" href="https://unpkg.com/react-big-calendar@0.22.0/lib/css/react-big-calendar.css" />
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/react-big-calendar@0.22.0/dist/react-big-calendar.js"></script>
+    <script src="https://unpkg.com/moment@2.24.0/moment.js"></script>
+</head>
+
+<body>
+    <div id="root" style="height: 800px"></div>
+    <script type="text/babel">
+        const domContainer = document.querySelector("#root");
+        const localizer = ReactBigCalendar.momentLocalizer(moment);
+        const Calendar = () => {
+            const [events, setEvents] = React.useState([]);
+            const [url, setUrl] = React.useState(
+                "https://central.wordcamp.org/wp-json/wp/v2/wordcamps?per_page=100"
+            );
+            React.useEffect(() => {
+                fetch(url)
+                    .then((response) => response.json())
+                    .then((result) => {
+                        let formatData = [];
+                        result.map((item, index) => {
+                            formatData[index] = {
+                                id: index,
+                                title: item.title.rendered,
+                                start: moment(
+                                    moment.unix(item["Start Date (YYYY-mm-dd)"])
+                                ).toDate(),
+                                end: moment(
+                                    moment.unix(item["End Date (YYYY-mm-dd)"])
+                                ).toDate(),
+                            };
+                        });
+                        setEvents(formatData);
+                    });
+            }, []);
+            return (
+                <ReactBigCalendar.Calendar events={events} localizer={localizer} />
+            );
+        }
+        ReactDOM.render(<Calendar />, domContainer);
+    </script>
+</body>
+
+</html>
