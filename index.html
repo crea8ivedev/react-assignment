@@ -21,6 +21,14 @@
             const [url, setUrl] = React.useState(
                 "https://central.wordcamp.org/wp-json/wp/v2/wordcamps?per_page=100"
             );
+
+            const handleSelectEvent = React.useCallback(
+                (event) => {
+                    window.open(event.link, '_blank', 'noopener,noreferrer');
+                },
+                []
+            );
+
             React.useEffect(() => {
                 fetch(url)
                     .then((response) => response.json())
@@ -30,6 +38,7 @@
                             formatData[index] = {
                                 id: index,
                                 title: item.title.rendered,
+                                link: item.link,
                                 start: moment(
                                     moment.unix(item["Start Date (YYYY-mm-dd)"])
                                 ).toDate(),
@@ -42,9 +51,13 @@
                     });
             }, []);
             return (
-                <ReactBigCalendar.Calendar events={events} localizer={localizer} />
+                <ReactBigCalendar.Calendar
+                    onSelectEvent={handleSelectEvent}
+                    events={events}
+                    localizer={localizer}
+                />
             );
-        }
+        };
         ReactDOM.render(<Calendar />, domContainer);
     </script>
 </body>
